@@ -1,8 +1,11 @@
-const io = require("socket.io")(8900, {
-    cors: {
-        origin: "http://localhost:3000",
-    },
-});
+const socketPort = process.env.PORT || 8900;
+
+const io = require("socket.io")(socketPort);
+//     , {
+//     cors: {
+//         origin: "http://localhost:3000",
+//     },
+// });
 
 let users = [];
 let searchingUsers = [];
