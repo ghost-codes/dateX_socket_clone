@@ -1,4 +1,4 @@
-const socketPort = process.env.PORT || 8000;
+const socketPort = process.env.PORT || 5000;
 
 const io = require("socket.io")(socketPort);
 //     , {
@@ -13,11 +13,17 @@ let maleLobby = [];
 let femaleLobby = [];
 
 const addUser = (userId, socketId) => {
-    !users.some(user => user.userId === userId) && users.push({ userId, socketId })
+    if (!users.some(user => user.userId === userId)) { users.push({ userId, socketId }) }
+    else {
+        users = users.filter(user => user.userId !== userId);
+        users.push({ userId, socketId })
+    }
 }
 
 const removeUser = (socketId) => {
+    console.log(socketId);
     users = users.filter(user => user.socketId !== socketId);
+    console.log(users);
 }
 
 const getUsers = (userId) => {
@@ -71,8 +77,9 @@ io.on("connection", (socket) => {
     })
 
     // when disconnected
-    socket.on("disconnect", (socket) => {
+    socket.on("disconnect", (s) => {
         console.log("user disconnected");
+        console.log(socket.id);
         removeUser(socket.id);
         io.emit("getUsers", users);
     });
