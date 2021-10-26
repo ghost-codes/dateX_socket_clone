@@ -1,4 +1,4 @@
-const socketPort = process.env.PORT || 8900;
+const socketPort = process.env.PORT || 3000;
 
 const io = require("socket.io")(socketPort);
 //     , {
@@ -13,7 +13,7 @@ let maleLobby = [];
 let femaleLobby = [];
 
 const addUser = (userId, socketId) => {
-    !userid.some(user => user.userId === userId) && user.push({ userId, socketId })
+    !users.some(user => user.userId === userId) && users.push({ userId, socketId })
 }
 
 const removeUser = (socketId) => {
