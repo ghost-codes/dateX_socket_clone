@@ -1,4 +1,4 @@
-const socketPort = process.env.PORT || 3000;
+const socketPort = process.env.PORT || 8000;
 
 const io = require("socket.io")(socketPort);
 //     , {
@@ -51,7 +51,7 @@ io.on("connection", (socket) => {
 
     // matchUsers(socket);
     //after connection take user id and socket id
-    socket.on("addUser", userId => {
+    socket.on("addUser", ({ userId }) => {
         addUser(userId, socket.id);
         io.emit("getUsers", users);
     });
@@ -59,7 +59,10 @@ io.on("connection", (socket) => {
     //send and get messages
     socket.on("sendMessage", ({ senderId, receiverId, text }) => {
         const user = getUsers(receiverId);
-        io.to(user.socketId).emit("getMessage", { senderId, text })
+        if (user) {
+
+            io.to(user.socketId).emit("getMessage", { senderId, text })
+        }
     });
 
     // searching socket
